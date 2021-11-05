@@ -10,6 +10,7 @@
         :state="Boolean(form.file)"
         placeholder="Choose a file or drop it here"
         drop-placeholder="Drop file here"
+        v-on:change="onChangeFileUpload()"
       ></b-form-file>
 
       <div class="mt-3 buttons">
@@ -29,22 +30,42 @@ export default {
   data() {
     return {
       form: {
-        file: null,
-        validated: true, //implement rules to validate the file
+        file: "",
       },
       show: true,
     };
   },
   methods: {
+    onChangeFileUpload() {
+      this.form.file = this.$refs.file.files[0];
+    },
     onSubmit(event) {
       event.preventDefault();
 
-      if (this.form.validated) {
+      if (this.form.file) {
         this.onReset();
         alert("Dados importados com sucesso");
       } else {
         alert("Selecione um arquivo válido");
       }
+
+      // let formData = new FormData();
+      // formData.append("file", this.form.file);
+
+      // this.axios
+      //   .post("http://localhost:8000/api", formData, {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   })
+      //   .then(function (data) {
+      //     alert("Success");
+      //     console.log(data.data);
+      //   })
+      //   .catch(function (e) {
+      //     alert("Faliure");
+      //     console.log(e);
+      //   });
     },
     onReset(event) {
       if (event) {
